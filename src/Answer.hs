@@ -2,6 +2,8 @@ module Answer
   ( colorAssignment, colorAssignAnswer, answerProtocol, repeatMoveAnswer
   ) where
 
+import System.IO
+
 data Color = Red
            | Blue
            deriving (Eq, Show)
@@ -38,6 +40,7 @@ repeatMoveAnswer :: Color -> IO()
 repeatMoveAnswer color = do
     move <- getLine
     moveAnswer color move
+    hFlush stdout
     repeatMoveAnswer color
 
 answerProtocol :: String -> IO()
