@@ -1,5 +1,5 @@
 module ParseMap
-    ( parseMap, getHorizontalValueOfMark
+    ( parseMap, getRedHeadPosition, getBlueHeadPosition
     ) where
 
 import Data.List.Split
@@ -27,8 +27,21 @@ parseMap :: String -> [String]
 parseMap x = breakOnSlash $ numberParser x
 
 getHorizontalValueOfMark :: Char -> [String] -> Int
-getHorizontalValueOfMark _ [[]] = error "can't retrieve horizontal value"
-getHorizontalValueOfMark _ [] = error "can't retrieve horizontal value"
+getHorizontalValueOfMark _ [[]] = -100
+getHorizontalValueOfMark _ [] = -100
 getHorizontalValueOfMark c (x:xs)
-  | isJust(elemIndex c x) = 1
+  | isJust(elemIndex c x) = 0
   | otherwise = 1 + getHorizontalValueOfMark c xs
+
+getVerticalValueOfMark :: Char -> [String] -> Int
+getVerticalValueOfMark _ [[]] = -100
+getVerticalValueOfMark _ [] = -100
+getVerticalValueOfMark c (x:xs)
+  | isJust(elemIndex c x) = fromJust $ elemIndex c x
+  | otherwise = getVerticalValueOfMark c xs
+
+getRedHeadPosition :: [String] -> (Int, Int)
+getRedHeadPosition tronMap = (getVerticalValueOfMark 'R' tronMap, getHorizontalValueOfMark 'R' tronMap)
+
+getBlueHeadPosition :: [String] -> (Int, Int)
+getBlueHeadPosition tronMap = (getVerticalValueOfMark 'B' tronMap, getHorizontalValueOfMark 'B' tronMap)
