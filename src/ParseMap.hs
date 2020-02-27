@@ -43,13 +43,39 @@ getVerticalValueOfMark c (x:xs)
   | otherwise = getVerticalValueOfMark c xs
 
 getRedHeadPosition :: [String] -> (Int, Int)
-getRedHeadPosition tronMap = (getVerticalValueOfMark 'R' tronMap, getHorizontalValueOfMark 'R' tronMap)
+getRedHeadPosition tronMap = (getHorizontalValueOfMark 'R' tronMap, getVerticalValueOfMark 'R' tronMap)
 
 getBlueHeadPosition :: [String] -> (Int, Int)
-getBlueHeadPosition tronMap = (getVerticalValueOfMark 'B' tronMap, getHorizontalValueOfMark 'B' tronMap)
+getBlueHeadPosition tronMap = (getHorizontalValueOfMark 'B' tronMap, getVerticalValueOfMark 'B' tronMap)
 
 isMoveUpPossible :: Color -> [String] -> Bool
 isMoveUpPossible Red tronMap = (tronMap ^? element (xValue - 1) . element yValue) == Just ' '
                                where
-                                 xValue = getVerticalValueOfMark 'R' tronMap
-                                 yValue = getHorizontalValueOfMark 'R' tronMap
+                                 (xValue, yValue) = getRedHeadPosition tronMap
+isMoveUpPossible Blue tronMap = (tronMap ^? element (xValue - 1) . element yValue) == Just ' '
+                                where
+                                  (xValue, yValue) = getBlueHeadPosition tronMap
+
+isMoveDownPossible :: Color -> [String] -> Bool
+isMoveDownPossible Red tronMap = (tronMap ^? element (xValue + 1) . element yValue) == Just ' '
+                               where
+                                 (xValue, yValue) = getRedHeadPosition tronMap
+isMoveDownPossible Blue tronMap = (tronMap ^? element (xValue + 1) . element yValue) == Just ' '
+                                where
+                                  (xValue, yValue) = getBlueHeadPosition tronMap
+
+isMoveLeftPossible :: Color -> [String] -> Bool
+isMoveLeftPossible Red tronMap = (tronMap ^? element xValue . element (yValue - 1)) == Just ' '
+                               where
+                                 (xValue, yValue) = getRedHeadPosition tronMap
+isMoveLeftPossible Blue tronMap = (tronMap ^? element xValue . element (yValue - 1)) == Just ' '
+                                where
+                                  (xValue, yValue) = getBlueHeadPosition tronMap
+
+isMoveRightPossible :: Color -> [String] -> Bool
+isMoveRightPossible Red tronMap = (tronMap ^? element xValue . element (yValue + 1)) == Just ' '
+                               where
+                                 (xValue, yValue) = getRedHeadPosition tronMap
+isMoveRightPossible Blue tronMap = (tronMap ^? element xValue . element (yValue + 1)) == Just ' '
+                                where
+                                  (xValue, yValue) = getBlueHeadPosition tronMap
