@@ -3,10 +3,7 @@ module Answer
   ) where
 
 import System.IO
-
-data Color = Red
-           | Blue
-           deriving (Eq, Show)
+import HataiTypes
 
 colorAssignment :: String -> Color
 colorAssignment x

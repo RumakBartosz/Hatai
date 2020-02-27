@@ -1,11 +1,13 @@
 module ParseMap
-    ( parseMap, getRedHeadPosition, getBlueHeadPosition
+    ( parseMap, getRedHeadPosition, getBlueHeadPosition, isMoveUpPossible
     ) where
 
 import Data.List.Split
 import Data.List
 import Text.Read
 import Data.Maybe
+import Control.Lens
+import HataiTypes
 
 breakOnSlash :: String -> [String]
 breakOnSlash = splitOn "/"
@@ -45,3 +47,9 @@ getRedHeadPosition tronMap = (getVerticalValueOfMark 'R' tronMap, getHorizontalV
 
 getBlueHeadPosition :: [String] -> (Int, Int)
 getBlueHeadPosition tronMap = (getVerticalValueOfMark 'B' tronMap, getHorizontalValueOfMark 'B' tronMap)
+
+isMoveUpPossible :: Color -> [String] -> Bool
+isMoveUpPossible Red tronMap = (tronMap ^? element (xValue - 1) . element yValue) == Just ' '
+                               where
+                                 xValue = getVerticalValueOfMark 'R' tronMap
+                                 yValue = getHorizontalValueOfMark 'R' tronMap
