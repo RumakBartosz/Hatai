@@ -2,6 +2,7 @@ module Main where
 
 import System.IO
 import Answer
+import RandBot
 
 main :: IO ()
 main = do

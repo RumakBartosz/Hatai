@@ -1,5 +1,5 @@
 module ParseMap
-    ( parseMap, getRedHeadPosition, getBlueHeadPosition, isMoveUpPossible
+    ( parseMap, getRedHeadPosition, getBlueHeadPosition, getAllAvailableMoves
     ) where
 
 import Data.List.Split
@@ -79,3 +79,10 @@ isMoveRightPossible Red tronMap = (tronMap ^? element xValue . element (yValue +
 isMoveRightPossible Blue tronMap = (tronMap ^? element xValue . element (yValue + 1)) == Just ' '
                                 where
                                   (xValue, yValue) = getBlueHeadPosition tronMap
+
+getAllAvailableMoves :: Color -> [String] -> [Move]
+getAllAvailableMoves color tronMap =
+  [UP    | isMoveUpPossible color tronMap] ++
+  [DOWN  | isMoveDownPossible color tronMap] ++
+  [LEFT  | isMoveLeftPossible color tronMap] ++
+  [RIGHT | isMoveRightPossible color tronMap]

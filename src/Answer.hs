@@ -4,6 +4,8 @@ module Answer
 
 import System.IO
 import HataiTypes
+import RandBot
+import ParseMap
 
 colorAssignment :: String -> Color
 colorAssignment x
@@ -36,7 +38,7 @@ moveAnswer color move
 repeatMoveAnswer :: Color -> IO()
 repeatMoveAnswer color = do
     move <- getLine
-    moveAnswer color move
+    getMove color (parseMap (purifyMoveString move))
     hFlush stdout
     repeatMoveAnswer color
 
@@ -45,5 +47,8 @@ answerProtocol message
     | take 5 message == "tbi v" = versionNumberAnswer message
     | take 3 message == "tbi" = interfaceDiscoveryAnswer message
     | otherwise = putStrLn "general message error"
+
+purifyMoveString :: String -> String
+purifyMoveString = drop 5
 
 -- exitReaction :: IO()
